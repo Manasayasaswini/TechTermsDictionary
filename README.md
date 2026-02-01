@@ -1,0 +1,1 @@
+Learn Tech in Your Language. A technical terms dictionary that helps students locate complex terms and understand them through English, Telugu, and Tinglish definitions  —making technology more accessible than ever.
