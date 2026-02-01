@@ -1,0 +1,75 @@
+from flask import Flask, render_template, request, jsonify
+import sqlite3
+import os
+from database import init_db
+
+app = Flask(__name__)
+app.json.sort_keys = False
+
+if not os.path.exists('tech_terms.db'):
+    print("Database not found. \n...Initializing database...")
+    init_db()
+else:
+    print("Database already exists. Skipping initialization.")
+
+def get_db_connection():
+    conn=sqlite3.connect('tech_terms.db')
+    conn.execute("PRAGMA foreign_keys = ON")
+    conn.row_factory = sqlite3.Row
+    return conn
+
+
+@app.route('/')
+def home():
+    conn = get_db_connection()
+    terms = conn.execute('SELECT * FROM terms LEFT JOIN examples ON terms.term_id = examples.term_id').fetchall()
+    conn.close()
+    return render_template('index.html', terms=terms)
+
+@app.route('/api/terms', methods=['GET'])
+def get_terms():
+    category_filter = request.args.get('category')
+    query = request.args.get('q')
+    conn = get_db_connection()
+
+    if category_filter:
+        terms = conn.execute('SELECT * FROM terms LEFT JOIN examples ON terms.term_id = examples.term_id WHERE category = ?',(category_filter,)).fetchall()
+
+
+    elif query:
+
+        term_name = f"%{query}%"
+
+        terms = conn.execute('SELECT * FROM terms LEFT JOIN examples ON terms.term_id = examples.term_id WHERE tech_term LIKE ?', (term_name,)).fetchall()
+
+    else:
+        terms = conn.execute('SELECT * FROM terms LEFT JOIN examples ON terms.term_id = examples.term_id').fetchall()
+
+    conn.close()
+
+
+    terms_list = [dict(term) for term in terms]
+    return jsonify(terms_list)
+
+@app.route('/api/terms/<int:id>/', methods=['GET'])
+def get_term_details(id):
+    conn = get_db_connection()
+    term = conn.execute('SELECT * FROM terms LEFT JOIN examples ON terms.term_id = examples.term_id WHERE terms.term_id = ?',(id,)).fetchone()
+    conn.close()
+
+    if term is None:
+        return jsonify({'error': 'Term not found'}), 404
+
+    return render_template('term_detail.html', term=term)
+
+    
+
+    #if not terms:
+    #   return jsonify({'error': 'Term not found'}), 404
+
+
+if __name__ == '__main__':
+    print("----Server will run on http://localhost:8080-----")
+    app.run(debug=True, host='0.0.0.0', port=8080)
+
+
