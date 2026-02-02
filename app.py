@@ -22,9 +22,19 @@ def get_db_connection():
 @app.route('/')
 def home():
     conn = get_db_connection()
-    terms = conn.execute('SELECT * FROM terms LEFT JOIN examples ON terms.term_id = examples.term_id').fetchall()
+    terms = conn.execute('SELECT * FROM terms ORDER BY LOWER(tech_term) ASC').fetchall()
+    #terms = conn.execute('SELECT * FROM terms LEFT JOIN examples ON terms.term_id = examples.term_id').fetchall()
     conn.close()
-    return render_template('index.html', terms=terms)
+
+    grouped_terms = {}
+    for term in terms:
+        first_letter = term['tech_term'][0].upper()
+        if first_letter not in grouped_terms:
+            grouped_terms[first_letter] = []
+        grouped_terms[first_letter].append(term)
+
+    #return render_template('index.html', terms=terms)
+    return render_template('index.html', grouped_terms=grouped_terms)
 
 @app.route('/api/terms', methods=['GET'])
 def get_terms():
@@ -49,7 +59,8 @@ def get_terms():
 
 
     terms_list = [dict(term) for term in terms]
-    return jsonify(terms_list)
+    #return jsonify(terms_list)
+    return render_template('terms.html', terms_list=terms_list)
 
 @app.route('/api/terms/<int:id>/', methods=['GET'])
 def get_term_details(id):
