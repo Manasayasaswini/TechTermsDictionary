@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>List of Terms</title>
+    </head>
+    <body>
+	<div class="allterms">
+        <h1>List of all Terms</h1>
+        <table id="termsTable" width="100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Category</th>
+                    <th>Term Name</th>
+                    <th>Definition in English</th>
+                    <th>Definition in Tinglish</th>
+                    <th>Definition in Telugu</th>
+                    <th>Example1</th>
+                    <th>Example2</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                {% for term in terms_list %}
+                <tr>
+                    <td>{{term.term_id}}</td>
+                    <td>{{term.category}}</td>
+		    <td><a href="/api/terms/{{term.term_id}}/">{{term.tech_term}}<br></a></td>
+                    <td>{{term.def_in_english}}</td>
+                    <td>{{term.def_in_tinglish}}</td>
+                    <td>{{term.def_in_telugu}}</td>
+                    <td>{{term.example1}}</td>
+                    <td>{{term.example2}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+	</div>
+    </body>
+</html>
+

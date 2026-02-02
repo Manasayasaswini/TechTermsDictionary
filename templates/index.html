@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	<title>tech_terms</title>
+    </head>
+    <body>
+	<h1>Tech Terms</h1>
+	
+        <div id="search_input">
+	    <form action="/api/terms" methods="GET">
+	    <input name='q' type="text" id="search" placeholder="Search Term">
+	    <button type="submit">Search</button>
+	    </form>
+	</div>
+	<div>
+	    <form action="/api/terms" methods="GET">
+	    <select name="category" id="category">
+            <option value="All Categories">All Categories</option>
+            <option value="Programming & Logic">Programming, Logic</option>
+	    <option value="Web & Application Development">Web &amp; Application Development</option>
+            <option value="Database Systems">Database Systems</option>
+            <option value="Networking & Cybersecurity">Networking &amp; Cybersecurity</option>
+            <option value="Hardware & Embedded Systems">Hardware &amp; Embedded Systems</option>
+            <option value="Tools & Environments">Tools &amp; Environments</option>
+	    <option value="Other Tech Terms">Other Tech Terms</option>
+	    </select>
+	    <button type="submit">Filter</button>
+	    </form>
+	</div>
+	<div class="section">
+	    {% for letter, terms in grouped_terms.items() %}
+            <div class="letter-section">
+              <div class="letter-header">{{ letter }}</div>	
+	      {% for term in terms %}
+	       <a href="/api/terms/{{term.term_id}}/">{{term.tech_term}}<br></a>
+	      {% endfor %} <br>
+            </div>
+	 {% endfor %}
+        </div>
+    </body>		
+</html>
+
