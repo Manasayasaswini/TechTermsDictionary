@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for
 import sqlite3
 import os
 from database import init_db
@@ -62,10 +62,10 @@ def get_terms():
     #return jsonify(terms_list)
     return render_template('terms.html', terms_list=terms_list)
 
-@app.route('/api/terms/<int:id>/', methods=['GET'])
-def get_term_details(id):
+@app.route('/api/terms/<int:term_id>/', methods=['GET'])
+def get_term_details(term_id):
     conn = get_db_connection()
-    term = conn.execute('SELECT * FROM terms LEFT JOIN examples ON terms.term_id = examples.term_id WHERE terms.term_id = ?',(id,)).fetchone()
+    term = conn.execute('SELECT * FROM terms LEFT JOIN examples ON terms.term_id = examples.term_id WHERE terms.term_id = ?',(term_id,)).fetchone()
     conn.close()
 
     if term is None:
@@ -73,14 +73,71 @@ def get_term_details(id):
 
     return render_template('term_detail.html', term=term)
 
-    
+@app.route('/api/admin', methods=['GET'])
+def admin_page():
+    conn = get_db_connection()
+    terms = conn.execute("SELECT * FROM terms LEFT JOIN examples ON terms.term_id = examples.term_id ORDER BY term_id DESC LIMIT 10").fetchall()
+    conn.close()
+    return render_template('admin_page.html', terms=terms)
+
+@app.route('/api/admin/addTerm', methods=['POST'])
+def add_term():
+    data = request.form
+    conn = get_db_connection()
+    required_fields = ['category', 'tech_term', 'def_in_english', 'def_in_tinglish', 'def_in_telugu', 'example1', 'example2']
+    for field in required_fields:
+        if field not in data:
+            return jsonify({'Error': f'Missing field:{field}'}), 400
+
+    cursor = conn.cursor()
+    cursor.execute('INSERT INTO terms (category, tech_term, def_in_english, def_in_tinglish, def_in_telugu) VALUES (?,?,?,?,?)', (data['category'], data['tech_term'], data['def_in_english'], data['def_in_tinglish'], data['def_in_telugu']))
+    term_id = cursor.lastrowid
+    cursor.execute('INSERT INTO examples (term_id, example1, example2) VALUES (?,?,?)', (term_id, data['example1'], data['example2']))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('admin_page'))
+
+
+@app.route('/api/admin/deleteTerm/<int:term_id>', methods=['POST'])
+def delete_term(term_id):
+    conn = get_db_connection()
+    conn.execute('DELETE FROM terms WHERE term_id = (?)', (term_id,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('admin_page'))
 
     #if not terms:
     #   return jsonify({'error': 'Term not found'}), 404
 
 
+
+@app.route('/api/admin/updateTerm/<int:term_id>', methods=['GET', 'POST'])
+def update_term(term_id):
+  conn = get_db_connection()
+  if request.method == 'GET':
+    term = conn.execute('SELECT * FROM terms LEFT JOIN examples ON terms.term_id = examples.term_id WHERE terms.term_id = (?)', (term_id,)).fetchone()
+    conn.commit()
+    conn.close()
+    return render_template('update_term.html', term = term)
+
+  elif request.method == 'POST':
+      data = request.form
+      required_fields = ['category', 'tech_term', 'def_in_english', 'def_in_tinglish', 'def_in_telugu', 'example1', 'example2']
+      for field in required_fields:
+        if field not in data:
+            return jsonify({'Error': f'Missing field:{field}'}), 400
+
+      cursor = conn.cursor()
+      cursor.execute('UPDATE terms SET category = ?, tech_term = ?, def_in_english = ?, def_in_tinglish = ?, def_in_telugu = ? WHERE term_id = ?', (data['category'], data['tech_term'], data['def_in_english'], data['def_in_tinglish'], data['def_in_telugu'], term_id))
+      cursor.execute('UPDATE examples SET example1 = ?, example2 = ? WHERE term_id = ?', (data['example1'], data['example2'], term_id))
+      conn.commit()
+      conn.close()
+      return redirect(url_for('admin_page'))
+
+
 if __name__ == '__main__':
     print("----Server will run on http://localhost:8080-----")
     app.run(debug=True, host='0.0.0.0', port=8080)
+
 
 
