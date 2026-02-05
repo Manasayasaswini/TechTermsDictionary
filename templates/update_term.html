@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	    <title>update page</title>
+    </head>
+    <body>
+        <h1>Update Term</h1>
+        <div class="update_term">
+                   
+                 <form action="/api/admin/updateTerm/{{term.term_id}}" method="POST">
+			 {{ term.category}}
+	         <select name="category" id="category">
+			 <option {% if term.category == "All Categories" %}selected{% endif %} value="All Categories">All Categories</option>
+			 <option {% if term.category == "Programming & Logic" %}selected{% endif %} value="Programming & Logic">Programming, Logic</option>
+			 <option {% if term.category == "Web & Application Development" %}selected{% endif %} value="Web & Application Development">Web &amp; Application Development</option>
+			 <option {% if term.category == "Database Systems" %}selected{% endif %} value="Database Systems">Database Systems</option>
+			 <option {% if term.category == "Networking & Cybersecurity" %}selected{% endif %} value="Networking & Cybersecurity">Networking &amp; Cybersecurity</option>
+			 <option {% if term.category == "Hardware & Embedded Systems" %}selected{% endif %} value="Hardware & Embedded Systems">Hardware &amp; Embedded Systems</option>
+			 <option {% if term.category == "Tools & Environments" %}selected{% endif %} value="Tools & Environments">Tools &amp; Environments</option>
+			 <option {% if term.category == "Other Tech Terms" %}selected{% endif %} value="Other Tech Terms">Other Tech Terms</option>
+                 </select>
+               
+                     <input type="text" name="tech_term" placeholder="Term Name" value="{{term.tech_term}}"><br>
+                     <input type="text" name="def_in_english" placeholder="English Definition" value="{{term.def_in_english}}"><br>
+                     <input type="text" name="def_in_tinglish" placeholder="Tinglish Definition" value="{{term.def_in_tinglish}}"><br>
+                     <input type="text" name="def_in_telugu" placeholder="Telugu Definition" value="{{term.def_in_telugu}}"><br>
+                     <input type="text" name="example1" placeholder="Example1" value="{{term.example1}}"><br>
+                     <input type="text" name="example2" placeholder="Example2" value="{{term.example2}}"><br>
+                     <button type="submit">Submit</button>
+		 </form>
+                     
+         </div>
+      </body>
+</html>

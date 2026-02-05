@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>admin page</title>
+    </head>
+    <body>
+        <h1>The List of recently added Terms</h1>
+	<div class="admin_section">
+	 <div>
+	    
+	    <form action="/api/admin/addTerm" method="POST"><button type="button">Add Term</button>
+            <div>
+                <select name="category" id="category">
+                <option value="All Categories">All Categories</option>
+                <option value="Programming & Logic">Programming, Logic</option>
+                <option value="Web & Application Development">Web &amp; Application Development</option>
+                <option value="Database Systems">Database Systems</option>
+                <option value="Networking & Cybersecurity">Networking &amp; Cybersecurity</option>
+                <option value="Hardware & Embedded Systems">Hardware &amp; Embedded Systems</option>
+                <option value="Tools & Environments">Tools &amp; Environments</option>
+                <option value="Other Tech Terms">Other Tech Terms</option>
+                </select>
+                <button type="submit">Filter</button>
+            </div>
+	        <input type="text" name="tech_term" placeholder="Term Name"><br>
+		<input type="text" name="def_in_english" placeholder="English Definition"><br>
+		<input type="text" name="def_in_tinglish" placeholder="Tinglish Definition"><br>
+		<input type="text" name="def_in_telugu" placeholder="Telugu Definition"><br>
+		<input type="text" name="example1" placeholder="Example1"><br>
+		<input type="text" name="example2" placeholder="Example2"><br>
+		<button type="submit">Submit</button>
+	    </form>
+	 </div>
+	  <table id="recently added" width="50%">
+	    <thead>
+	      <tr>
+		<th>ID</th>
+	        <th>Term Name</th>
+		<th>Update or Delete</th>
+	      </tr>
+	    </thead>
+            <tbody id="admin_table">
+	        {% for term in terms %}
+		<tr>
+		    <td>{{term.term_id}}</td>
+	            <td><a href="/api/terms/{{term.term_id}}/">{{term.tech_term}}<br></a></td>
+		    <td><a href="/api/admin/updateTerm/{{term.term_id}}" class="button-link"><button type="button">Update</button></a>&nbsp;&nbsp;
+                    
+		    <form action="/api/admin/deleteTerm/{{term.term_id}}" method="POST"><button type="submit">Delete</button></form></td>
+	        </tr>
+		{% endfor %}
+	    </tbody>
+	  </table>
+	</div>
+    </body>
+</html>
