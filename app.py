@@ -5,7 +5,7 @@ from database import init_db
 
 app = Flask(__name__)
 app.json.sort_keys = False
-app.secret_key = os.environ.get('SECRET_KEY', 'MyTechicon secret key-- Need to be @safe')
+app.secret_key = os.environ.get('SECRET_KEY', 'your-secret-key-change-this-in-production')
 
 # Admin credentials from environment variables
 ADMIN_USERNAME = os.environ.get('ADMIN_USERNAME', 'admin')
@@ -19,6 +19,28 @@ if DATABASE_URL:
     import psycopg2
     from psycopg2.extras import RealDictCursor
     DB_TYPE = 'postgresql'
+    
+    # Check if database needs initialization
+    try:
+        conn = psycopg2.connect(DATABASE_URL)
+        cursor = conn.cursor()
+        cursor.execute("SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = 'terms')")
+        table_exists = cursor.fetchone()[0]
+        cursor.close()
+        conn.close()
+        
+        if not table_exists:
+            print("Database tables not found. Initializing database...")
+            init_db()
+        else:
+            print("Database tables already exist.")
+    except Exception as e:
+        print(f"Error checking database: {e}")
+        print("Attempting to initialize database...")
+        try:
+            init_db()
+        except Exception as init_error:
+            print(f"Database initialization error: {init_error}")
 else:
     # Local: SQLite
     import sqlite3
