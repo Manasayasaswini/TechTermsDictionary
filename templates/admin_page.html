@@ -2,14 +2,18 @@
 <html>
     <head>
         <title>admin page</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     </head>
     <body>
-        <h1>The List of recently added Terms</h1>
-	<div class="admin_section">
+	<h2>Admin Page</h2>
+	<div class="containers admin_section">
+	<h4>Add a new term</h4>
+
 	 <div>
 	    
-	    <form action="/api/admin/addTerm" method="POST"><button type="button">Add Term</button>
-            <div>
+	    <button id="addTermButton" type="button">Add Term</button>
+            <div id="addTermForm" class="card form-card">
+		<form action="/api/admin/addTerm" method="POST">
                 <select name="category" id="category">
                 <option value="All Categories">All Categories</option>
                 <option value="Programming & Logic">Programming, Logic</option>
@@ -21,7 +25,7 @@
                 <option value="Other Tech Terms">Other Tech Terms</option>
                 </select>
                 <button type="submit">Filter</button>
-            </div>
+
 	        <input type="text" name="tech_term" placeholder="Term Name"><br>
 		<input type="text" name="def_in_english" placeholder="English Definition"><br>
 		<input type="text" name="def_in_tinglish" placeholder="Tinglish Definition"><br>
@@ -30,8 +34,10 @@
 		<input type="text" name="example2" placeholder="Example2"><br>
 		<button type="submit">Submit</button>
 	    </form>
+	  </div>
 	 </div>
-	  <table id="recently added" width="50%">
+	  <table id="recently-added" class="card table-card">
+            <h4>Recently Added Terms</h4>
 	    <thead>
 	      <tr>
 		<th>ID</th>
@@ -44,13 +50,20 @@
 		<tr>
 		    <td>{{term.term_id}}</td>
 	            <td><a href="/api/terms/{{term.term_id}}/">{{term.tech_term}}<br></a></td>
-		    <td><a href="/api/admin/updateTerm/{{term.term_id}}" class="button-link"><button type="button">Update</button></a>&nbsp;&nbsp;
+		    
+	    
+		    <td>
+			<div class="action-buttons">
+			    <a href="/api/admin/updateTerm/{{term.term_id}}" class="button-link"><button type="button">Update</button></a>&nbsp;&nbsp;
                     
-		    <form action="/api/admin/deleteTerm/{{term.term_id}}" method="POST"><button type="submit">Delete</button></form></td>
-	        </tr>
+			    <form class = "delete_btn" action="/api/admin/deleteTerm/{{term.term_id}}" method="POST"><button type="submit">Delete</button></form></div></td>
+	           
+		</tr>
 		{% endfor %}
 	    </tbody>
+	    <a href="">See all terms</a>
 	  </table>
-	</div>
+	<script src=" {{url_for('static', filename='js/script.js')}} "></script>
+    </div> 
     </body>
 </html>
