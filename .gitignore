@@ -1,0 +1,29 @@
+# Database files (SQLite - not needed in production)
+tech_terms.db
+*.db
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+venv1/
+env/
+ENV/
+
+# Environment variables
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+what-i-learned-today-reels

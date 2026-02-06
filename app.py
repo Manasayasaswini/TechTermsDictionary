@@ -5,7 +5,7 @@ from database import init_db
 
 app = Flask(__name__)
 app.json.sort_keys = False
-app.secret_key = os.environ.get('SECRET_KEY', 'your-secret-key-change-this-in-production')
+app.secret_key = os.environ.get('SECRET_KEY', 'MyTechicon secret key-- Need to be @safe')
 
 # Admin credentials from environment variables
 ADMIN_USERNAME = os.environ.get('ADMIN_USERNAME', 'admin')

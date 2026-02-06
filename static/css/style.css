@@ -1,0 +1,272 @@
+/* 1. Theme Variables - Slate & Blue Palette */
+:root {
+    --bg-color: #f8fafc;        /* Very light slate background */
+    --primary-slate: #2d3748;   /* Dark slate for text/headers */
+    --accent-blue: #3182ce;     /* Professional blue for buttons/links */
+    --card-bg: #ffffff;
+    --border-color: #e2e8f0;
+    --danger: #e53e3e;          /* Red for delete */
+    --success: #38a169;         /* Green for submit */
+}
+
+/* 2. Global Resets */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', Tahoma, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--primary-slate);
+    line-height: 1.6;
+    padding: 40px 20px;
+}
+
+/* Shared Containers for all pages */
+.containers, .containersDetailSection, .containersUpdateTerm {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+h1, h2 {
+    color: var(--primary-slate);
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+h3, h4 {
+    color: var(--accent-blue);
+    margin-bottom: 20px;
+}
+
+/* 3. Index Page Styles (Book/Dictionary Look) */
+#search_input, #idxCategoryForm {
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+}
+
+form {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    max-width: 600px;
+}
+
+input, select {
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    flex: 1;
+}
+
+button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+/* Index Terms Grid - 3 Column Layout */
+.terms-grid {
+    column-count: 3;
+    column-gap: 40px;
+    column-rule: 1px solid var(--border-color);
+    padding: 10px 0;
+}
+
+.terms-grid a {
+    display: block;
+    color: var(--primary-slate);
+    text-decoration: none;
+    padding: 5px 0;
+    transition: color 0.2s;
+}
+
+.terms-grid a:hover {
+    color: var(--accent-blue);
+    font-weight: bold;
+}
+
+.letter-header {
+    font-size: 2rem;
+    color: var(--accent-blue);
+    border-bottom: 2px solid var(--accent-blue);
+    margin: 20px 0 10px 0;
+}
+
+/* 4. Admin & Update Page - Card Layout */
+.card, .update_term, #term_details {
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    border: 1px solid var(--border-color);
+}
+
+#addTermButton {
+    background: var(--accent-blue);
+    color: white;
+    margin-bottom: 20px;
+}
+
+/* Forms in Admin/Update */
+#addTermForm form, .update_term form {
+    flex-direction: column;
+    max-width: 100%;
+}
+
+button[type="submit"] {
+    background: var(--success);
+    color: white;
+    margin-top: 10px;
+}
+
+/* 5. Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: #edf2f7;
+    text-align: left;
+    padding: 15px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    color: #4a5568;
+}
+
+td {
+    padding: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.delete_btn button {
+    background: #fff5f5;
+    color: var(--danger);
+    border: 1px solid #feb2b2;
+}
+
+.delete_btn button:hover {
+    background: var(--danger);
+    color: white;
+}
+
+.button-link button {
+    background: #ebf8ff;
+    color: var(--accent-blue);
+    border: 1px solid #bee3f8;
+}
+
+/* 6. Term Details Page Styling */
+dl dt {
+    font-size: 1.2rem;
+    color: var(--accent-blue);
+    margin-top: 15px;
+}
+
+dl dd {
+    margin-bottom: 10px;
+    padding-left: 5px;
+    border-left: 3px solid var(--border-color);
+    padding-left: 15px;
+}
+
+/* 7. Floating Admin Link */
+.admin-link-wrapper {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+}
+
+.admin-link-wrapper a {
+    background: var(--primary-slate);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 50px;
+    text-decoration: none;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .terms-grid { column-count: 2; }
+}
+
+@media (max-width: 480px) {
+    .terms-grid { column-count: 1; }
+}
+
+/* 8. Full Terms List Page (Table View) */
+
+.allterms {
+    max-width: 1200px; /* Slightly wider for the big table */
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Scroll wrapper to prevent layout breaking on small screens */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    background: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-color);
+}
+
+#termsTable {
+    min-width: 1000px; /* Ensures table doesn't squish too much */
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* Zebra Striping for better readability */
+#termsTable tbody tr:nth-child(even) {
+    background-color: #f1f5f9;
+}
+
+#termsTable tbody tr:hover {
+    background-color: #e2e8f0;
+    transition: background 0.2s ease;
+}
+
+/* Column specific widths for definitions */
+#termsTable td {
+    font-size: 0.9rem;
+    vertical-align: top;
+    max-width: 200px; /* Prevents definitions from being too long */
+    word-wrap: break-word;
+}
+
+/* Styling the Term Link in the table */
+#termsTable td a {
+    color: var(--accent-blue);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+#termsTable td a:hover {
+    text-decoration: underline;
+}
+
+/* Category Badge style */
+#termsTable td:nth-child(2) {
+    font-weight: 600;
+    color: #4a5568;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+}
