@@ -2,9 +2,12 @@
 <html>
     <head>
 	    <title>update page</title>
+	    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     </head>
     <body>
+	<div class="containersUpdateTerm">
         <h1>Update Term</h1>
+
         <div class="update_term">
                    
                  <form action="/api/admin/updateTerm/{{term.term_id}}" method="POST">
@@ -30,5 +33,7 @@
 		 </form>
                      
          </div>
+	 <script src=" {{url_for('static', filename='js/script.js')}} "></script>
+	</div>
       </body>
 </html>

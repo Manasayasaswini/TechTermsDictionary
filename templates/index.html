@@ -2,19 +2,22 @@
 <html>
     <head>
 	<title>tech_terms</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     </head>
     <body>
+	<div class="containers">
 	<h1>Tech Terms</h1>
+	<h3>A technical dictionary</h3>
 	
         <div id="search_input">
 	    <form action="/api/terms" methods="GET">
 	    <input name='q' type="text" id="search" placeholder="Search Term">
-	    <button type="submit">Search</button>
+	    <button id="searchTermButton" type="submit">Search</button>
 	    </form>
 	</div>
-	<div>
+	<div id="idxCategoryForm">
 	    <form action="/api/terms" methods="GET">
-	    <select name="category" id="category">
+            <select name="category" id="category">
             <option value="All Categories">All Categories</option>
             <option value="Programming & Logic">Programming, Logic</option>
 	    <option value="Web & Application Development">Web &amp; Application Development</option>
@@ -24,22 +27,25 @@
             <option value="Tools & Environments">Tools &amp; Environments</option>
 	    <option value="Other Tech Terms">Other Tech Terms</option>
 	    </select>
-	    <button type="submit">Filter</button>
+	    <button id="categoryFilterButton" type="submit">Filter</button>
 	    </form>
 	</div>
 	<div class="section">
 	    {% for letter, terms in grouped_terms.items() %}
             <div class="letter-section">
-              <div class="letter-header">{{ letter }}</div>	
+              <div class="letter-header">{{ letter }}</div>
+	      <div class="terms-grid">
 	      {% for term in terms %}
 	       <a href="/api/terms/{{term.term_id}}/">{{term.tech_term}}<br></a>
-	      {% endfor %} <br>
+	      {% endfor %} </div><br>
             </div>
 	 {% endfor %}
         </div>
-	<div>
+	<div class="admin-link-wrapper">
 	    <a href="/api/admin">Locate to admin page<br></a>
 	</div>
+	</div>
+	<script src=" {{url_for('static', filename='js/script.js')}} "></script>
     </body>		
 </html>
 
