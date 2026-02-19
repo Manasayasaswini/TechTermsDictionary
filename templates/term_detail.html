@@ -17,12 +17,15 @@
                 <dd><b>Definition in tinglish: </b>{{term.def_in_tinglish}}</dd>
                 <dd><b>Definition in telugu: </b>{{term.def_in_telugu}}</dd>
 		<dt><b>Examples: </b></dt>
-		<dd>{{term.example1}}</dd>
-                <dd>{{term.example2}}</dd>
+		{% if term.example1 or term.example2 %}
+		  {% if term.example1 %}<dd><b>Example 1:</b> {{term.example1}}</dd>{% endif %}
+		  {% if term.example2 %}<dd><b>Example 2:</b> {{term.example2}}</dd>{% endif %}
+		{% else %}
+		  <dd><em>No examples provided.</em></dd>
+		{% endif %}
 	    </dl>
 	</div>
 	<script src=" {{url_for('static', filename='js/script.js')}} "></script>
 	</div>
     </body>
 </html>
-
